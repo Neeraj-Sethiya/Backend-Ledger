@@ -75,7 +75,6 @@ const createTransaction = async (req, res) => {
 
   let transaction;
   try {
-
     const session = await mongoose.startSession();
     session.startTransaction();
     transaction = (
@@ -124,15 +123,11 @@ const createTransaction = async (req, res) => {
     await transactionModel.findOneAndUpdate(
       { _id: transaction._id },
       { status: "COMPLETED" },
-      { session},
+      { session },
     );
-
-
 
     await session.commitTransaction();
     session.endSession();
-
-    
   } catch (err) {
     return res.status(400).json({
       error: err.message,
@@ -233,7 +228,25 @@ async function createInitialFundTransaction(req, res) {
   });
 }
 
+const checkSystemUser = async (req, res) => {
+  try {
+    return res.status(200).json({
+      success: true,
+      message: "System user confirmed",
+      userId: req.user._id,
+      systemUser: req.user.systemUser,
+    });
+  } catch (error) {
+    console.error("System check error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+
 module.exports = {
   createTransaction,
   createInitialFundTransaction,
+  checkSystemUser,
 };
