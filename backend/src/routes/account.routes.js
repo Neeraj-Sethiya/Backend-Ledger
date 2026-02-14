@@ -10,7 +10,6 @@ router.post("/", authMiddleware.authMiddleware, accountController.createAccountC
 
 router.get("/", authMiddleware.authMiddleware, accountController.getUserAccountsController);
 
-
 router.get("/balance/:accountId", authMiddleware.authMiddleware,accountController.getBalanceController);
 
 module.exports = router;
