@@ -58,6 +58,7 @@ async function authMiddlewareSystemUser(req, res, next) {
         const user = await userModel.findById(decoded.userId).select("+systemUser");
         if(!user.systemUser){
             return res.status(403).json({
+                success: false,
                 message: "Forbidden, you are not system user",
             })
         }
